@@ -1,6 +1,8 @@
 import pygame
 import easygui
+import os
 
+currentfilepath=''
 
 def Open():
     Path = easygui.enterbox("Enter file path:", "Open")
@@ -11,18 +13,28 @@ def Open():
         return Open()
     l = eval(File.readline())
     File.close()
-    return l
+    return (l, Path)
 
 
-def Save(l):
-    Path = easygui.enterbox("Enter file path:", "Save")
-    File = open(Path, mode="w")
+def Save(l,currentfilepath):
+    if currentfilepath == '':
+        Path = easygui.enterbox("Enter file path:", "Save")
+    else:
+        Path = currentfilepath
+    try:
+        File = open(Path, mode="w")
+    except FileNotFoundError:
+        os.mknod(Path)
+        File = open(Path, mode="w")
+    except TypeError:
+        return ""
     File.write(str(l))
     File.close()
+    return Path
 
 
 if easygui.ccbox("", "Whiteboard 2.1", ("Open", "New"), "Whiteboard2.1.gif"):
-    l = Open()
+    l, currentfilepath = Open()
 else:
     l = []
 pygame.init()
@@ -62,7 +74,7 @@ pygame.draw.circle(screen, black, (675, 25), 10)
 pygame.draw.circle(screen, black, (725, 25), 7)
 pygame.draw.circle(screen, black, (775, 25), 5)
 pygame.draw.rect(screen, black, (875, 0, 50, 50), 0)
-screen.blit(font.render("Clean", 1, white), [880, 18])
+screen.blit(font.render("Clear", 1, white), [880, 18])
 pygame.draw.rect(screen, black, (350, 50, 50, 25), 0)
 pygame.draw.rect(screen, black, (550, 50, 50, 25), 0)
 pygame.draw.rect(screen, black, (975, 0, 50, 50), 0)
@@ -161,17 +173,19 @@ while UnFinished:
             pygame.draw.rect(screen, white, (800, 50, 0, 25), 0)
         elif(spot[0] <= 925 and spot[1] <= 50):
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
+            l = []
         elif(spot[0] <= 1025 and spot[1] <= 50):
-            Save(l)
+            Save(l,currentfilepath)
         elif(spot[0] <= 1125 and spot[1] <= 50):
             l = []
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
-            l = Open()
+            l, currentfilepath = Open()
             for i in range(len(l)):
                 pygame.draw.circle(screen, l[i][3:], l[i][:2], l[i][2])
         elif(spot[0] <= 1225 and spot[1] <= 50):
             l = []
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
+            currentfilepath = ""
         if (spot[1] >= 75 and (spot[0], spot[1], radins, color[0], color[1], color[2]) not in l):
             pygame.draw.circle(screen, color, spot, radins)
             l.append((spot[0], spot[1], radins, color[0], color[1], color[2]))
