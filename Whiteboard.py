@@ -11,6 +11,8 @@ def Open():
     except FileNotFoundError:
         easygui.msgbox("File not found.")
         return Open()
+    except TypeError:
+        return Open()
     l = eval(File.readline())
     File.close()
     return (l, Path)
@@ -42,7 +44,7 @@ icon = pygame.image.load("icon.png")
 screen = pygame.display.set_mode([1400, 700])
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Whiteboard 2.1.1")
-radins = 15
+radius = 15
 mousedown = False
 UnFinished = True
 white = 255, 255, 255
@@ -149,27 +151,27 @@ while UnFinished:
             pygame.draw.rect(screen, white, (0, 50, 450, 25), 0)
             pygame.draw.rect(screen, white, (500, 50, 0, 25), 0)
         elif (spot[0] <= 600 and spot[1] <= 50):
-            radins = 15
+            radius = 15
             pygame.draw.rect(screen, black, (550, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (550, 50, 0, 25), 0)
             pygame.draw.rect(screen, white, (600, 50, 200, 25), 0)
         elif (spot[0] <= 650 and spot[1] <= 50):
-            radins = 12
+            radius = 12
             pygame.draw.rect(screen, black, (600, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (550, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (650, 50, 150, 25), 0)
         elif (spot[0] <= 700 and spot[1] <= 50):
-            radins = 10
+            radius = 10
             pygame.draw.rect(screen, black, (650, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (550, 50, 100, 25), 0)
             pygame.draw.rect(screen, white, (700, 50, 100, 25), 0)
         elif (spot[0] <= 750 and spot[1] <= 50):
-            radins = 7
+            radius = 7
             pygame.draw.rect(screen, black, (700, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (550, 50, 150, 25), 0)
             pygame.draw.rect(screen, white, (750, 50, 50, 25), 0)
         elif (spot[0] <= 800 and spot[1] <= 50):
-            radins = 5
+            radius = 5
             pygame.draw.rect(screen, black, (750, 50, 50, 25), 0)
             pygame.draw.rect(screen, white, (550, 50, 200, 25), 0)
             pygame.draw.rect(screen, white, (800, 50, 0, 25), 0)
@@ -188,8 +190,8 @@ while UnFinished:
             l = []
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
             currentfilepath = ""
-        if (spot[1] >= 75 and (spot[0], spot[1], radins, color[0], color[1], color[2]) not in l):
-            pygame.draw.circle(screen, color, spot, radins)
-            l.append((spot[0], spot[1], radins, color[0], color[1], color[2]))
+        if (spot[1] >= 75 and (spot[0], spot[1], radius, color[0], color[1], color[2]) not in l):
+            pygame.draw.circle(screen, color, spot, radius)
+            l.append((spot[0], spot[1], radius, color[0], color[1], color[2]))
     pygame.display.update()
 pygame.quit()
