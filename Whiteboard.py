@@ -12,7 +12,7 @@ def Open():
         easygui.msgbox("File not found.")
         return Open()
     except TypeError:
-        return Open()
+        return ([],'')
     l = eval(File.readline())
     File.close()
     return (l, Path)
@@ -179,7 +179,9 @@ while UnFinished:
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
             l = []
         elif(spot[0] <= 1025 and spot[1] <= 50):
-            Save(l,currentfilepath)
+            currentfilepath=Save(l,currentfilepath)
+        elif(spot[0] <= 1125 and spot[1] <= 50):
+            currentfilepath=Save(l,currentfilepath)
         elif(spot[0] <= 1225 and spot[1] <= 50):
             l = []
             pygame.draw.rect(screen, white, (0, 75, 2000, 2000), 0)
