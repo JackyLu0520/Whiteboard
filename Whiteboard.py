@@ -5,7 +5,9 @@ import os
 currentfilepath=''
 
 def Open():
-    Path = easygui.enterbox("Enter file path:", "Open")
+    Path = easygui.fileopenbox(title="Open file",default="*.wb2",filetypes=[["*.wb2","Whiteboard 2.x File"]])
+    if len(Path)<4 or Path[-4:]!='.wb2':
+        Path+='.wb2'
     try:
         File = open(Path, mode="r")
     except FileNotFoundError:
@@ -20,16 +22,18 @@ def Open():
 
 def Save(l,currentfilepath):
     if currentfilepath == '':
-        Path = easygui.enterbox("Enter file path:", "Save")
+        Path = easygui.filesavebox(title="Save file",default="*.wb2",filetypes=[["*.wb2","Whiteboard 2.x File"]])
     else:
         Path = currentfilepath
+    if len(Path)<4 or Path[-4:]!='.wb2':
+        Path+='.wb2'
     try:
         File = open(Path, mode="w")
     except FileNotFoundError:
         os.mknod(Path)
         File = open(Path, mode="w")
     except TypeError:
-        return ""
+        return currentfilepath
     File.write(str(l))
     File.close()
     return Path
